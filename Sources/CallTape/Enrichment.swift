@@ -88,15 +88,18 @@ enum Enrichment {
         guard let db = openRO(whatsAppDBPath()) else { return nil }
         defer { sqlite3_close(db) }
         var stmt: OpaquePointer?
-        // Direction lives in ZWAAGGREGATECALLEVENT (ZINCOMING/ZVIDEO/ZMISSED), linked
-        // to the call event by timestamp. The participant JID gives the number when
-        // it is a real "@s.whatsapp.net" address (recent 1:1 calls often store an
-        // opaque "@lid" instead, which we reject).
+        // Each call event links to a shared "call group" id via ZWACDCALLEVENT.Z1CALLEVENTS.
+        // Both the aggregate event (direction/video, ZWAAGGREGATECALLEVENT.Z_PK) and the
+        // participant row (ZWACDCALLEVENTPARTICIPANT.Z1PARTICIPANTS) hang off that same
+        // group id, so we join on it directly. The participant JID gives the number:
+        // "@s.whatsapp.net" is already one, "@lid" is resolved via LID.sqlite. Skip
+        // group calls (ZGROUPJIDSTRING set), which have no single number.
         let sql = """
         SELECT e.ZDATE, e.ZDURATION, a.ZINCOMING, a.ZVIDEO, p.ZJIDSTRING
         FROM ZWACDCALLEVENT e
-        LEFT JOIN ZWAAGGREGATECALLEVENT a ON ABS(a.ZFIRSTDATE - e.ZDATE) < 2
-        LEFT JOIN ZWACDCALLEVENTPARTICIPANT p ON p.Z1PARTICIPANTS = e.Z_PK
+        LEFT JOIN ZWAAGGREGATECALLEVENT a ON a.Z_PK = e.Z1CALLEVENTS
+        LEFT JOIN ZWACDCALLEVENTPARTICIPANT p ON p.Z1PARTICIPANTS = e.Z1CALLEVENTS
+        WHERE e.ZGROUPJIDSTRING IS NULL
         ORDER BY e.Z_PK DESC LIMIT 20;
         """
         guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return nil }

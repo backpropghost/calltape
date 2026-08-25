@@ -340,13 +340,25 @@ final class RecorderEngine: ObservableObject {
         Log.info("Monitoring started")
     }
 
+    // Calls briefly report no audio during connect and mid-call blips. Requiring a few
+    // consecutive misses before stopping keeps one call in one file instead of splitting
+    // it into tiny mic-only fragments.
+    private var missCount = 0
+    private let missesToEnd = 8   // 0.5s tick * 8 = ~4s grace before we call it over
+
     private func tick() {
         let active = activeCallProcess(matching: AppSettings.shared.targetBundles)
 
         if let active, session == nil, manualSession == nil, AppSettings.shared.autoRecord {
             begin(target: active.id, bundle: active.bundle, manual: false)
-        } else if active == nil, session != nil, !manual {
-            end()
+            missCount = 0
+        } else if session != nil, !manual {
+            if active == nil {
+                missCount += 1
+                if missCount >= missesToEnd { end(); missCount = 0 }
+            } else {
+                missCount = 0   // still in a call; reset the grace counter
+            }
         }
     }
 
