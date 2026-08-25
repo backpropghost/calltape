@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>CallTape</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleDisplayName</key>
+    <string>CallTape</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.calltape.app</string>
+    <key>CFBundleExecutable</key>
+    <string>CallTape</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>15.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>CallTape uses your microphone to record your side of the call. Nothing is recorded until a call starts.</string>
+    <key>NSContactsUsageDescription</key>
+    <string>CallTape uses your contacts to label recordings with the caller's name.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>CallTape transcribes your recordings on your Mac. Audio stays on this device.</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2026 CallTape. Open source under the MIT License.</string>
+</dict>
+</plist>
