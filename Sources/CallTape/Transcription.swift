@@ -126,7 +126,7 @@ enum Transcription {
         }
     }
 
-    /// macOS 26+: SpeechAnalyzer/SpeechTranscriber — built for long-form audio.
+    /// macOS 26+: SpeechAnalyzer/SpeechTranscriber, built for long-form audio.
     @available(macOS 26, *)
     private static func transcribeLongForm(url: URL) async throws -> TranscriptData {
         let requested = Locale.current

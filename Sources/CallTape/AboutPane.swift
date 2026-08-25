@@ -29,6 +29,28 @@ struct AboutPane: View {
                 .frame(maxWidth: 420)
                 .surfaceCard()
 
+                VStack(spacing: 10) {
+                    Label("Support CallTape", systemImage: "heart.fill")
+                        .font(.headline).foregroundStyle(Palette.accent)
+                    Text("CallTape is free, and it stays that way. If it earned a spot in your menu bar, you can help keep it going. Right now it goes toward an Apple Developer ID, so installs stop showing the scary warning.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button {
+                        if let url = URL(string: "https://github.com/sponsors/backpropghost") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        Label("Sponsor on GitHub", systemImage: "heart")
+                    }
+                    .buttonStyle(ProminentActionStyle(tint: Palette.accent))
+                    .padding(.top, 4)
+                }
+                .padding(18)
+                .frame(maxWidth: 420)
+                .surfaceCard()
+
                 HStack(spacing: 12) {
                     Button("View Logs") {
                         NSWorkspace.shared.activateFileViewerSelecting([Log.fileURL])

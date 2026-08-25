@@ -123,7 +123,7 @@ final class CallSession {
     private let remoteGain: Float
 
     // Speaker timeline: per-window we compare your mic energy vs the other party's,
-    // so the transcript can be labelled "You" vs the caller without needing stereo.
+    // so the transcript can be labeled "You" vs the caller without needing stereo.
     private var sampleRateHz: Double = 48000
     private var winMineE: Float = 0
     private var winRemoteE: Float = 0

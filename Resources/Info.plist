@@ -22,6 +22,10 @@
     <string>15.0</string>
     <key>LSUIElement</key>
     <true/>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
     <key>NSMicrophoneUsageDescription</key>
     <string>CallTape uses your microphone to record your side of the call. Nothing is recorded until a call starts.</string>
     <key>NSContactsUsageDescription</key>
@@ -29,6 +33,6 @@
     <key>NSSpeechRecognitionUsageDescription</key>
     <string>CallTape transcribes your recordings on your Mac. Audio stays on this device.</string>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright © 2026 CallTape. Open source under the MIT License.</string>
+    <string>Copyright © 2026 backpropghost. Free for personal use (PolyForm Noncommercial License).</string>
 </dict>
 </plist>

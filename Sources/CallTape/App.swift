@@ -17,6 +17,11 @@ struct CallTapeApp: App {
             // App menu: use our own About window instead of the standard panel.
             CommandGroup(replacing: .appInfo) {
                 Button("About CallTape") { AppDelegate.shared?.showAbout() }
+                Button("Support CallTape…") {
+                    if let url = URL(string: "https://github.com/sponsors/backpropghost") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
             }
             // A dedicated Recording menu.
             CommandMenu("Recording") {
