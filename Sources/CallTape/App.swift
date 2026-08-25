@@ -2,6 +2,7 @@ import SwiftUI
 import AppKit
 import Combine
 import ServiceManagement
+import Carbon
 
 @main
 struct CallTapeApp: App {
@@ -57,9 +58,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         RecorderEngine.shared.startMonitoring()
 
         if AppSettings.shared.hasOnboarded {
-            // Returning user: opening the app should show the window.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-                self?.showMainWindow()
+            // Only open the window when the user launched CallTape themselves. When
+            // macOS starts us at login we stay in the menu bar and show no window.
+            if !launchedAsLoginItem {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+                    self?.showMainWindow()
+                }
+            } else {
+                Log.info("Launched at login; staying in the menu bar only")
             }
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
@@ -67,6 +73,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             }
         }
         Log.info("CallTape launched")
+    }
+
+    /// True when macOS started the app automatically as a login item, rather than
+    /// the user opening it. Read from the Apple event that launched the process.
+    private var launchedAsLoginItem: Bool {
+        guard let event = NSAppleEventManager.shared().currentAppleEvent else { return false }
+        return event.eventID == kAEOpenApplication &&
+            event.paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
     }
 
     // Keep running after the window is closed; we live in the menu bar.

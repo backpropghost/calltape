@@ -115,19 +115,40 @@ struct MenuView: View {
             }
             .buttonStyle(ProminentActionStyle(tint: Palette.accent))
 
-            Button { AppDelegate.shared?.openApp(section: .settings) } label: {
-                Image(systemName: "gearshape")
+            HoverRevealButton(title: "Settings", systemImage: "gearshape") {
+                AppDelegate.shared?.openApp(section: .settings)
             }
-            .buttonStyle(HoverButtonStyle())
-            .help("Settings")
 
-            Button { NSApp.terminate(nil) } label: {
-                Image(systemName: "power")
+            HoverRevealButton(title: "Quit App", systemImage: "power") {
+                NSApp.terminate(nil)
             }
-            .buttonStyle(HoverButtonStyle())
-            .help("Quit CallTape")
         }
         .font(.callout)
+    }
+}
+
+/// An icon button that reveals its label inline when hovered.
+private struct HoverRevealButton: View {
+    let title: String
+    let systemImage: String
+    let action: () -> Void
+    @State private var hovering = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image(systemName: systemImage)
+                if hovering {
+                    Text(title)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .transition(.opacity.combined(with: .move(edge: .leading)))
+                }
+            }
+        }
+        .buttonStyle(HoverButtonStyle())
+        .onHover { h in withAnimation(.easeOut(duration: 0.15)) { hovering = h } }
+        .help(title)
     }
 }
 
