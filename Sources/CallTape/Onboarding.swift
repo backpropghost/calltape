@@ -10,6 +10,7 @@ struct OnboardingView: View {
     @State private var step = 0
     @State private var micGranted = Permissions.microphoneGranted
     @State private var contactsGranted = Permissions.contactsGranted
+    @State private var fdaGranted = Permissions.callLogReadable
 
     private let lastStep = 4
 
@@ -24,6 +25,17 @@ struct OnboardingView: View {
             footer
         }
         .frame(width: 540, height: 520)
+        // Coming back from System Settings makes the app active again; re-check
+        // every permission so a step flips to "Allowed" without a relaunch.
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            refreshPermissions()
+        }
+    }
+
+    private func refreshPermissions() {
+        micGranted = Permissions.microphoneGranted
+        contactsGranted = Permissions.contactsGranted
+        fdaGranted = Permissions.callLogReadable
     }
 
     // MARK: Steps
@@ -53,6 +65,7 @@ struct OnboardingView: View {
     private var fullDisk: some View {
         Step(icon: "folder.badge.gearshape", title: "Add call details",
              message: "To label each recording with the phone number and whether it was incoming or outgoing, CallTape reads your Mac's call history, which needs Full Disk Access. In the window that opens, turn CallTape on, then come back here.",
+             granted: fdaGranted,
              action: ("Open System Settings", { Permissions.openSettings(.fullDiskAccess) }))
     }
 
