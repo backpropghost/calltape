@@ -123,7 +123,14 @@ struct MainView: View {
                     Sidebar(selection: routeSelection)
                         .navigationSplitViewColumnWidth(min: 212, ideal: 236, max: 300)
                 } detail: {
-                    if case .about = lib.route { AboutPane() } else { SettingsPane() }
+                    Group {
+                        if case .about = lib.route { AboutPane() } else { SettingsPane() }
+                    }
+                    // Same Record button as the calls view, so the header is consistent everywhere.
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) { RecordToolbarButton() }
+                    }
+                    .toolbarBackground(.hidden, for: .windowToolbar)
                 }
             }
         }
@@ -183,14 +190,30 @@ private struct Sidebar: View {
             refreshAttention()
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            HStack(spacing: 5) {
-                Image(systemName: "lock.fill").font(.caption2)
-                Text("Everything stays on your Mac").font(.caption2)
-                Spacer()
+            VStack(spacing: Space.s) {
+                Button {
+                    if let url = URL(string: "https://github.com/sponsors/backpropghost") {
+                        NSWorkspace.shared.open(url)
+                    }
+                } label: {
+                    Label("Sponsor", systemImage: "heart.fill")
+                        .font(.callout.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .tint(Color(red: 0.85, green: 0.62, blue: 0.20))
+
+                HStack(spacing: 5) {
+                    Image(systemName: "lock.fill").font(.caption2)
+                    Text("Everything stays on your Mac").font(.caption2)
+                    Spacer()
+                }
+                .foregroundStyle(.secondary)
             }
-            .foregroundStyle(.secondary)
             .padding(.horizontal, Space.l)
-            .padding(.vertical, Space.s)
+            .padding(.top, Space.s)
+            .padding(.bottom, Space.s)
         }
     }
 }
