@@ -52,6 +52,11 @@ struct AboutPane: View {
                 .surfaceCard()
 
                 HStack(spacing: 12) {
+                    Button("Website") {
+                        if let url = URL(string: "https://backpropghost.github.io/calltape/") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }
                     Button("View Logs") {
                         NSWorkspace.shared.activateFileViewerSelecting([Log.fileURL])
                     }

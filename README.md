@@ -9,12 +9,21 @@ Records your cellular, FaceTime, and WhatsApp calls straight on your Mac, transc
 ![Platform](https://img.shields.io/badge/macOS-15%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-5-orange)
 ![License](https://img.shields.io/badge/License-Noncommercial-green)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%99%A5-E5A800)](https://github.com/sponsors/backpropghost)
+
+**[Website](https://backpropghost.github.io/calltape/)** · [Download](https://github.com/backpropghost/calltape/releases) · [Sponsor](https://github.com/sponsors/backpropghost)
 
 </div>
 
 ## Why
 
-Good call recording on the Mac usually means a cloud service that uploads your conversations. CallTape does the opposite: it captures audio at the system layer, mixes both sides into one file, and never sends a byte off your machine. It is open source so you can verify that for yourself.
+Recording a call on Apple platforms is deliberately hard, and every ready-made option came with a catch:
+
+- **Third-party call-recording apps** merge in a separate conference line, so the other person hears a join and an announcement. Not silent, and not private.
+- **On iPhone, iOS 26's Call Recording** plays an audible "this call is being recorded" notice to both sides. Useful, but the opposite of quiet.
+- **Cloud recorders and "AI notetaker" bots** work by uploading your conversation to someone else's server. A hard no for something this personal.
+
+None of those were acceptable, so CallTape takes a different route: it records the call **on your Mac**, at the system audio layer. Cellular and FaceTime calls arrive through Continuity; WhatsApp is captured directly. Both sides land in one file with **no beep and nothing announced to the other person**, and nothing ever leaves your machine. It is source-available, so you can confirm all of that for yourself.
 
 ## Features
 
